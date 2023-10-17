@@ -22,19 +22,9 @@
   <script src="./node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
   <script src="./node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
   <script>
-    let mode = "preview" // preview or html
-    let highlight = true
-
     const editorContainer = document.getElementById('editor-container')
-    const previewContainer = document.getElementById('preview-container')
 
-    const markdownPreviewBtn = document.getElementById('markdown-preview-btn')
-    const htmlPreviewBtn = document.getElementById('html-preview-btn')
-    const highlightBtn = document.getElementById('highlight-btn')
-    const downloadBtn = document.getElementById('download-btn')
-
-    const defaultCode =
-      "# Type sentences\n\n[Recursion](https://recursionist.io)\n\n```\nfunction hello(){\n  return 'hello';\n}\n```"
+    const defaultCode = ""
 
     const editor = monaco.editor.create(editorContainer, {
       value: defaultCode,
