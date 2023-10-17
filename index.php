@@ -50,36 +50,45 @@
       clearTimeout(editTimeout)
 
       editTimeout = setTimeout(() => {
-        console.log("1秒以内に入力がなかった")
         renderPreview()
-      }, 1000)
+      }, 500)
     })
 
     const renderPreview = () => {
+      const id = new Date().getTime().toString();
       const editorValue = editor.getValue()
       const data = {
+        "id": id,
         "code": editorValue
       }
 
       fetch("generate.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      }).then((res) => {
-        return res.blob()
-      }).then((blob) => {
-        const imageUrl = URL.createObjectURL(blob)
-        const img = document.createElement("img")
-        // img.className = "mw-100 h-auto"
-        img.src = imageUrl
-        previewContainer.innerHTML = ""
-        previewContainer.appendChild(img)
-      }).catch(error => {
-        console.error('Error:', error)
-      })
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }).then((res) => {
+          return res.json()
+        })
+        .then((data) => {
+          if (data.status === "ok") {
+            const images = data.images
+            previewContainer.innerHTML = ""
+            for (let i = 0; i < images.length; i++) {
+              const imageElement = new Image()
+              imageElement.src = "data:image/png;base64," + images[i]
+              previewContainer.appendChild(imageElement)
+            }
+          }
+          if (data.status === "failed") {
+            console.log(data.message)
+            previewContainer.innerHTML = "<p>No UML</p>"
+
+          }
+        })
     }
+    renderPreview()
   </script>
 </body>
 
