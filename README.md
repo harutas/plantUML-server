@@ -22,3 +22,14 @@
 
 - FW
   - monaco editor（https://microsoft.github.io/monaco-editor/）
+
+
+### ロジック
+1. クライアントのテキストをサーバへ送信する
+2. phpのexec関数を使用してjavaでplantUMLのjarファイルを実行する
+  ```java -jar plantuml.jar sequenceDiagram.txt```
+3. sequenceDiagram.pngが生成されるのでクライアントへレスポンスを返す。
+
+### 実行環境要件
+- Java 8
+- GraphViz
