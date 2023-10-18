@@ -6,18 +6,20 @@ if ($post_data) {
   $userId = $post_data->id;
   $codeString = $post_data->code;
 
-  $uml_output = "./storage/${userId}";
+  $uml_output = __DIR__ . "/storage/${userId}";
 
   $sequenceDiagram = "${userId}.txt";
 
   file_put_contents($sequenceDiagram, $codeString);
-  $command = "java -jar plantuml-mit-1.2023.11.jar -o ${uml_output} ${sequenceDiagram} 2>&1";
+  $command = "java -jar plantuml-1.2023.11.jar -o ${uml_output} ${sequenceDiagram} 2>&1";
 
   exec($command, $output, $result_code);
 
-  if (count($output) === 0) {
+  $imageFiles = globImages($uml_output);
 
-    $imageFiles = getImages($uml_output);
+  if ($imageFiles) {
+
+    $imageFiles = globImages($uml_output);
     foreach ($imageFiles as $filename) {
       $imageContents = file_get_contents($filename);
       $base64 = base64_encode($imageContents);
@@ -28,20 +30,9 @@ if ($post_data) {
     header("Content-Type: application/json");
     echo json_encode($res);
   } else {
-    if ($result_code === 0) {
-      // エラーメッセージを生成
-      $message = "";
-      foreach ($output as $line) {
-        $message .= $line . "\n";
-      }
-      $res = array("status" => "failed", "message" => $message);
-      header("Content-Type: application/json");
-      echo json_encode($res);
-    } else {
-      $res = array("status" => "failed", "message" => "実行エラーが生じました");
-      header("Content-Type: application/json");
-      echo json_encode($res);
-    }
+    $res = array("status" => "failed", "message" => "no uml");
+    header("Content-Type: application/json");
+    echo json_encode($res);
   }
 }
 
@@ -53,7 +44,7 @@ if (file_exists($uml_output)) {
   rmdir($uml_output);
 }
 
-function getImages(string $dirname)
+function globImages(string $dirname)
 {
   return glob("${dirname}/*.png");
 }

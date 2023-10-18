@@ -14,8 +14,8 @@
     <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
   </div>
   <div class="row px-5">
-    <div id="editor-container" class="w-50 px-0" style="height:600px;border:1px solid grey"></div>
-    <div id="preview-container" class="w-50 overflow-auto" style="height:600px;border:1px solid grey"></div>
+    <div id="editor-container" class="col-4 px-0" style="height:600px;border:1px solid grey"></div>
+    <div id="preview-container" class="col-4 overflow-auto" style="height:600px;border:1px solid grey"></div>
   </div>
 
   <script>
@@ -80,11 +80,9 @@
               imageElement.src = "data:image/png;base64," + images[i]
               previewContainer.appendChild(imageElement)
             }
-          }
-          if (data.status === "failed") {
+          } else if (data.status === "failed") {
             console.log(data.message)
             previewContainer.innerHTML = "<p>No UML</p>"
-
           }
         })
     }
