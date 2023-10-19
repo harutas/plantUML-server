@@ -18,8 +18,8 @@
     <div id="preview-container" class="col-4 overflow-auto" style="height:600px;border:1px solid grey"></div>
     <div id="practice-container" class="col-4 overflow-auto" style="height:600px;border:1px solid grey">
       <div>
-        <button id="answer-uml-btn" class="btn btn-secondary">Answer UML</button>
-        <button id="answer-code-btn" class="btn btn-secondary">Answer Code</button>
+        <button id="answer-uml-btn" class="btn btn-secondary btn-sm">Answer UML</button>
+        <button id="answer-code-btn" class="btn btn-secondary btn-sm">Answer Code</button>
       </div>
       <div id="answer-uml" class="w-100 d-block overflow-auto">Answer UML</div>
       <div id="answer-code" class="w-100 d-none overflow-auto">Answer Code</div>

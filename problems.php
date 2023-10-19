@@ -1,10 +1,6 @@
 <?php
-$problems = [(object)[
-  "id" => 5,
-  "title" => "ライフラインの活性化",
-  "theme" => "シーケンス図",
-  "uml" => "@startuml\nautoactivate on\nalice -> bob : hello\nbob -> bob : self call\nbill -> bob #005500 : hello from thread 2\nbob -> george ** : create\nreturn done in thread 2\nreturn rc\nbob -> george !! : delete\nreturn success\n@enduml"
-]]
+$json = file_get_contents('./assets/problems.json');
+$problems = json_decode($json);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +22,7 @@ $problems = [(object)[
 
     <!-- Table -->
     <div class="my-4">
-      <table class="table">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -35,14 +31,15 @@ $problems = [(object)[
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <?php
-            foreach ($problems as $problem) : ?>
+          <?php
+          foreach ($problems as $problem) : ?>
+            <?php $id = $problem->id ?>
+            <tr style="cursor: pointer;" onclick="navigateToProblem(<?php echo $id ?>)">
               <th scope="row"><?php echo $problem->id ?></th>
               <td colspan="2"><?php echo $problem->title ?></td>
               <td><?php echo $problem->theme ?></td>
-            <?php endforeach ?>
-          </tr>
+            </tr>
+          <?php endforeach ?>
         </tbody>
       </table>
     </div>
@@ -68,6 +65,11 @@ $problems = [(object)[
       </nav>
     </div>
   </div>
+  <script>
+    function navigateToProblem(id) {
+      window.location.href = `problem.php?id=${id}`
+    }
+  </script>
 </body>
 
 </html>

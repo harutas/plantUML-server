@@ -12,7 +12,7 @@
   <?php
   header("location: problems.php");
   exit;
-  ?>\
+  ?>
 </body>
 
 </html>
