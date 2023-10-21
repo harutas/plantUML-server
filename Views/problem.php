@@ -1,3 +1,14 @@
+<?php
+
+require_once("../Controllers/ProblemController.php");
+require_once("../Models/Problem.php");
+
+$problemId = $_GET["id"];
+
+$problemController = new Controllers\ProblemController();
+$problem = $problemController->getProblem($problemId);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,6 +114,10 @@
         })
     }
 
+    const renderAnswerCode = () => {
+      answerCode.innerText = `<?php echo $problem->uml ?>`
+    }
+
     const showAnswerUML = () => {
       isAnswerCode = !isAnswerCode
       answerUml.classList.remove("d-none")
@@ -125,6 +140,7 @@
     answerCodeBtn.addEventListener("click", showAnswerCode)
 
     renderPreview()
+    renderAnswerCode()
     showAnswerUML()
   </script>
 </body>

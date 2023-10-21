@@ -2,8 +2,8 @@
 require_once("../Controllers/ProblemController.php");
 require_once("../Models/Problem.php");
 
-$problemModel = new Controllers\ProblemController();
-$problems = $problemModel->getProblems();
+$problemController = new Controllers\ProblemController();
+$problems = $problemController->getProblems();
 ?>
 
 <!DOCTYPE html>

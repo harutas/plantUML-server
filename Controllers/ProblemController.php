@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Models\Problem;
-use Models\Problem\Problem as ProblemProblem;
 
 class ProblemController
 {
@@ -17,5 +16,13 @@ class ProblemController
   public function getProblems()
   {
     return $this->problems->readProblems();
+  }
+
+  public function getProblem(int $problemId)
+  {
+    $problems = $this->getProblems();
+    return array_filter($problems, function ($problem) use ($problemId) {
+      return $problem->id == $problemId;
+    })[0];
   }
 }
