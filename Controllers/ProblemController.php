@@ -21,8 +21,8 @@ class ProblemController
   public function getProblem(int $problemId)
   {
     $problems = $this->getProblems();
-    return array_filter($problems, function ($problem) use ($problemId) {
-      return $problem->id == $problemId;
-    })[0];
+    return array_values(array_filter($problems, function ($problem) use ($problemId) {
+      return $problem->id === $problemId;
+    }))[0];
   }
 }

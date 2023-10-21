@@ -2,6 +2,7 @@
 
 require_once("../Controllers/ProblemController.php");
 require_once("../Models/Problem.php");
+require_once("../Models/UMLConverter.php");
 
 $problemId = $_GET["id"];
 
@@ -10,7 +11,7 @@ $problem = $problemController->getProblem($problemId);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
@@ -22,7 +23,7 @@ $problem = $problemController->getProblem($problemId);
 
 <body>
   <div class="mt-2 px-5">
-    <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
+    <h1 class="fs-2 fw-bolder">ID: <?php echo $problemId . " " . $problem->title; ?></h1>
   </div>
   <div class="row px-5">
     <div id="editor-container" class="col-4 px-0" style="height:600px;border:1px solid grey"></div>
@@ -32,9 +33,13 @@ $problem = $problemController->getProblem($problemId);
         <button id="answer-uml-btn" class="btn btn-secondary btn-sm my-1">Answer UML</button>
         <button id="answer-code-btn" class="btn btn-secondary btn-sm my-1">Answer Code</button>
       </div>
-      <div id="answer-uml" class="w-100 d-block overflow-auto">Answer UML</div>
-      <div id="answer-code" class="w-100 d-none overflow-auto">Answer Code</div>
+      <div id="answer-uml" class="d-block"></div>
+      <div id="answer-code" class="d-none"></div>
     </div>
+  </div>
+  <div class="px-5 my-3">
+    <button type="button" class="btn btn-secondary" onclick="location.href='problems.php'">戻る</button>
+  </div>
   </div>
 
   <script>
@@ -60,7 +65,7 @@ $problem = $problemController->getProblem($problemId);
     let isAnswerCode = false
 
     const defaultCode =
-      "@startuml\nClass01 <|-- Class02\nClass03 *-- Class04\nClass05 o-- Class06\nClass07 .. Class08\nClass09 -- Class10\n@enduml"
+      "Type code..."
 
     const editor = monaco.editor.create(editorContainer, {
       value: defaultCode,
@@ -114,6 +119,37 @@ $problem = $problemController->getProblem($problemId);
         })
     }
 
+    const renderAnswerUML = () => {
+      const id = new Date().getTime().toString() + "a";
+      const data = {
+        "id": id,
+        "code": `<?php echo $problem->uml ?>`
+      }
+      fetch("../api/generate.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }).then((res) => {
+          return res.json()
+        })
+        .then((data) => {
+          if (data.status === "ok") {
+            const images = data.images
+            answerUml.innerHTML = ""
+            for (let i = 0; i < images.length; i++) {
+              const imageElement = new Image()
+              imageElement.src = "data:image/png;base64," + images[i]
+              answerUml.appendChild(imageElement)
+            }
+          } else if (data.status === "failed") {
+            console.log(data.message)
+            answerUml.innerHTML = "<p>No UML</p>"
+          }
+        })
+    }
+
     const renderAnswerCode = () => {
       answerCode.innerText = `<?php echo $problem->uml ?>`
     }
@@ -140,6 +176,7 @@ $problem = $problemController->getProblem($problemId);
     answerCodeBtn.addEventListener("click", showAnswerCode)
 
     renderPreview()
+    renderAnswerUML()
     renderAnswerCode()
     showAnswerUML()
   </script>
