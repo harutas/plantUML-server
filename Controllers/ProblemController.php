@@ -2,7 +2,8 @@
 
 namespace Controllers;
 
-use Models;
+use Models\Problem;
+use Models\Problem\Problem as ProblemProblem;
 
 class ProblemController
 {
@@ -10,7 +11,7 @@ class ProblemController
 
   public function __construct()
   {
-    $this->problems = new Models\Problem();
+    $this->problems = new Problem\Problem();
   }
 
   public function getProblems()
