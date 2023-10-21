@@ -32,22 +32,28 @@ class UMLComverter
       }
       $res = array("status" => "ok", "images" => $imageData);
 
+      UMLComverter::deleteTempStorage($output_dir);
       header("Content-Type: application/json");
       return json_encode($res);
     } else {
       $res = array("status" => "failed", "message" => "no uml");
+      UMLComverter::deleteTempStorage($output_dir);
+
       header("Content-Type: application/json");
       return json_encode($res);
-    }
-
-    if (file_exists($output_dir)) {
-      array_map("unlink", glob("${output_dir}/*.*"));
-      rmdir($output_dir);
     }
   }
 
   static private function globImages(string $dirname)
   {
     return glob("${dirname}/*.png");
+  }
+
+  static private function deleteTempStorage($output_dir)
+  {
+    if (file_exists($output_dir)) {
+      array_map("unlink", glob("${output_dir}/*.*"));
+      rmdir($output_dir);
+    }
   }
 }
