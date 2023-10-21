@@ -1,6 +1,9 @@
 <?php
-$json = file_get_contents('./assets/problems.json');
-$problems = json_decode($json);
+require_once("../Controllers/ProblemController.php");
+require_once("../Models/Problem.php");
+
+$problemModel = new Controllers\ProblemController();
+$problems = $problemModel->getProblems();
 ?>
 
 <!DOCTYPE html>

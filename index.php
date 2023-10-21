@@ -10,7 +10,7 @@
 
 <body>
   <?php
-  header("location: problems.php");
+  header("location: Views/problems.php");
   exit;
   ?>
 </body>
