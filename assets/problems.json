@@ -10,5 +10,59 @@
     "title": "分類子の宣言",
     "theme": "シーケンス図",
     "uml": "@startuml\nparticipant Participant as Foo\nactor Actor as Foo1\nboundary Boundary as Foo2\ncontrol Control as Foo3\nentity Entity as Foo4\ndatabase Database as Foo5\ncollections Collections as Foo6\nqueue Queue as Foo7\nFoo -> Foo1 : To actor \nFoo -> Foo2 : To boundary\nFoo -> Foo3 : To control\nFoo -> Foo4 : To entity\nFoo -> Foo5 : To database\nFoo -> Foo6 : To collections\nFoo -> Foo7: To queue\n@enduml"
+  },
+  {
+    "id": 3,
+    "title": "矢印の見た目を変える",
+    "theme": "シーケンス図",
+    "uml": "@startuml\nBob ->x Alice\nBob -> Alice\nBob ->> Alice\nBob -\\\\ Alice\nBob \\\\\\\\- Alice\nBob //-- Alice\nBob ->o Alice\nBob o\\\\\\\\-- Alice\nBob <-> Alice\nBob <->o Alice\n@enduml"
+  },
+  {
+    "id": 4,
+    "title": "矢印の色を替える",
+    "theme": "シーケンス図",
+    "uml": "@startuml\nBob -[#red]> Alice : hello\nAlice -[#0000FF]->Bob : ok\n@enduml"
+  },
+  {
+    "id": 5,
+    "title": "メッセージに付けるノート",
+    "theme": "シーケンス図",
+    "uml": "@startuml\nAlice->Bob : hello\nnote left: this is a first note\n\nBob->Alice : ok\nnote right: this is another note\n\nBob->Bob : I am thinking\nnote left\na note\ncan also be defined\non several lines\nend note\n@enduml"
+  },
+  {
+    "id": 6,
+    "title": "遅延",
+    "theme": "シーケンス図",
+    "uml": "@startuml\n\nAlice -> Bob: Authentication Request\n...\nBob --> Alice: Authentication Response\n...5 minutes later...\nBob --> Alice: Good Bye !\n\n@enduml"
+  },
+  {
+    "id": 7,
+    "title": "テキストの折り返し",
+    "theme": "シーケンス図",
+    "uml": "@startuml\nskinparam maxMessageSize 50\nparticipant a\nparticipant b\na -> b :this\\\\nis\\\\nmanually\\\\ndone\na -> b :this is a very long message on several words\n@enduml"
+  },
+  {
+    "id": 8,
+    "title": "ユースケース",
+    "theme": "ユースケース図",
+    "uml": "@startuml\n\n(First usecase)\n(Another usecase) as (UC2)\nusecase UC3\nusecase (Last\\\\nusecase) as UC4\n\n@enduml"
+  },
+  {
+    "id": 9,
+    "title": "アクター",
+    "theme": "ユースケース図",
+    "uml": "@startuml\n\n:First Actor:\n:Another\\\\nactor: as Men2\nactor Men3\nactor :Last actor: as Men4\n\n@enduml"
+  },
+  {
+    "id": 10,
+    "title": "ユースケースの説明",
+    "theme": "ユースケース図",
+    "uml": "@startuml\n\nusecase UC1 as \"You can use\nseveral lines to define your usecase.\nYou can also use separators.\n--\nSeveral separators are possible.\n==\nAnd you can add titles:\n..Conclusion..\nThis allows large description.\"\n\n@enduml"
+  },
+  {
+    "id": 11,
+    "title": "パッケージ",
+    "theme": "ユースケース図",
+    "uml": "@startuml\nleft to right direction\nactor Guest as g\npackage Professional {\n  actor Chef as c\n  actor \"Food Critic\" as fc\n}\npackage Restaurant {\n  usecase \"Eat Food\" as UC1\n  usecase \"Pay for Food\" as UC2\n  usecase \"Drink\" as UC3\n  usecase \"Review\" as UC4\n}\nfc --> UC4\ng --> UC1\ng --> UC2\ng --> UC3\n@enduml"
   }
 ]
