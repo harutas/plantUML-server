@@ -33,9 +33,15 @@ $display_problems = array_slice($problems, $start_page_num, MAX_PER_PAGE, true);
 
 <body>
   <div class="container">
-    <!-- Header -->
-    <div class="my-2">
-      <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
+    <div class="d-flex justify-content-between">
+      <!-- Header -->
+      <div class="my-2">
+        <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
+      </div>
+      <div class="d-flex align-items-center">
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='free-draw.php'">Free Draw</button>
+      </div>
+
     </div>
 
     <!-- Table -->
@@ -52,7 +58,7 @@ $display_problems = array_slice($problems, $start_page_num, MAX_PER_PAGE, true);
           <?php
           foreach ($display_problems as $problem) : ?>
             <?php $id = $problem->id ?>
-            <tr style="cursor: pointer;" onclick="navigateToProblem(<?php echo $id ?>)">
+            <tr style="cursor: pointer;" onclick="window.location.href = `problem.php?id=<?php echo $id ?>`">
               <th scope="row"><?php echo $problem->id ?></th>
               <td colspan="2"><?php echo $problem->title ?></td>
               <td><?php echo $problem->theme ?></td>
@@ -110,11 +116,6 @@ $display_problems = array_slice($problems, $start_page_num, MAX_PER_PAGE, true);
       </nav>
     </div>
   </div>
-  <script>
-    function navigateToProblem(id) {
-      window.location.href = `problem.php?id=${id}`
-    }
-  </script>
 </body>
 
 </html>

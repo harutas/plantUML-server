@@ -1,13 +1,5 @@
 <?php
-
-require_once("../Controllers/ProblemController.php");
-require_once("../Models/Problem.php");
 require_once("../Models/UMLConverter.php");
-
-$problemId = $_GET["id"];
-
-$problemController = new Controllers\ProblemController();
-$problem = $problemController->getProblem($problemId);
 ?>
 
 <!DOCTYPE html>
@@ -23,19 +15,11 @@ $problem = $problemController->getProblem($problemId);
 
 <body>
   <div class="mt-2 px-5">
-    <h1 class="fs-2 fw-bolder">ID: <?php echo $problemId . " " . $problem->title; ?></h1>
+    <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
   </div>
   <div class="row px-5">
-    <div id="editor-container" class="col-4 px-0" style="height:600px;border:1px solid grey"></div>
-    <div id="preview-container" class="col-4 overflow-auto" style="height:600px;border:1px solid grey"></div>
-    <div id="practice-container" class="col-4 overflow-auto" style="height:600px;border:1px solid grey">
-      <div>
-        <button id="answer-uml-btn" class="btn btn-secondary btn-sm my-1">Answer UML</button>
-        <button id="answer-code-btn" class="btn btn-secondary btn-sm my-1">Answer Code</button>
-      </div>
-      <div id="answer-uml" class="d-block"></div>
-      <div id="answer-code" class="d-none"></div>
-    </div>
+    <div id="editor-container" class="col-6 px-0" style="height:600px;border:1px solid grey"></div>
+    <div id="preview-container" class="col-6 overflow-auto" style="height:600px;border:1px solid grey"></div>
   </div>
   <div class="px-5 my-3">
     <button type="button" class="btn btn-secondary" onclick="location.href='problems.php'">戻る</button>
@@ -55,14 +39,6 @@ $problem = $problemController->getProblem($problemId);
   <script>
     const editorContainer = document.getElementById('editor-container')
     const previewContainer = document.getElementById('preview-container')
-
-    const answerUml = document.getElementById('answer-uml')
-    const answerCode = document.getElementById('answer-code')
-
-    const answerUmlBtn = document.getElementById('answer-uml-btn')
-    const answerCodeBtn = document.getElementById('answer-code-btn')
-
-    let isAnswerCode = false
 
     const defaultCode =
       "Type code..."
@@ -118,35 +94,8 @@ $problem = $problemController->getProblem($problemId);
         })
     }
 
-    const renderAnswerCode = () => {
-      answerCode.innerText = `<?php echo $problem->uml ?>`
-    }
-
-    const showAnswerUML = () => {
-      isAnswerCode = !isAnswerCode
-      answerUml.classList.remove("d-none")
-      answerUml.classList.add("d-block")
-
-      answerCode.classList.remove("d-block")
-      answerCode.classList.add("d-none")
-    }
-
-    const showAnswerCode = () => {
-      isAnswerCode = !isAnswerCode
-      answerUml.classList.remove("d-block")
-      answerUml.classList.add("d-none")
-
-      answerCode.classList.remove("d-none")
-      answerCode.classList.add("d-block")
-    }
-
-    answerUmlBtn.addEventListener("click", showAnswerUML)
-    answerCodeBtn.addEventListener("click", showAnswerCode)
-
     renderUML(editor.getValue(), previewContainer)
     renderUML(`<?php echo $problem->uml ?>`, answerUml)
-    renderAnswerCode()
-    showAnswerUML()
   </script>
 </body>
 
