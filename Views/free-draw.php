@@ -14,9 +14,35 @@ require_once("../Models/UMLConverter.php");
 </head>
 
 <body>
-  <div class="mt-2 px-5">
-    <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
+  <div class="d-flex justify-content-between">
+    <div class="mt-2 px-5">
+      <h1 class="fs-2 fw-bolder">PlantUML Server</h1>
+    </div>
+    <div class="d-flex align-items-center px-5">
+      <div class="d-flex align-items-center gap-1">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="format" id="png" value="png" checked>
+          <label class="form-check-label" for="png">
+            PNG
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="format" id="svg" value="svg">
+          <label class=" form-check-label" for="svg">
+            SVG
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="format" id="txt" value="txt">
+          <label class="form-check-label" for="txt">
+            TXT
+          </label>
+        </div>
+        <button id="download-btn" type="submit" class="btn btn-outline-secondary">Download</button>
+      </div>
+    </div>
   </div>
+
   <div class="row px-5">
     <div id="editor-container" class="col-6 px-0" style="height:600px;border:1px solid grey"></div>
     <div id="preview-container" class="col-6 overflow-auto" style="height:600px;border:1px solid grey"></div>
@@ -39,6 +65,8 @@ require_once("../Models/UMLConverter.php");
   <script>
     const editorContainer = document.getElementById('editor-container')
     const previewContainer = document.getElementById('preview-container')
+
+    const downloadBtn = document.getElementById('download-btn')
 
     const defaultCode =
       "Type code..."
@@ -94,8 +122,56 @@ require_once("../Models/UMLConverter.php");
         })
     }
 
+    const downloadFile = (code) => {
+      const id = new Date().getTime().toString();
+      // ラジオボタン要素を取得
+      const radioButtons = document.getElementsByName("format");
+
+      // 選択されたラジオボタンの値を取得
+      let selectedValue;
+      for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+          selectedValue = radioButton.value;
+          break; // 最初に選択されたラジオボタンが見つかったらループを終了
+        }
+      }
+
+      const data = {
+        "id": id,
+        "code": code,
+        "extension": selectedValue
+      }
+
+      fetch("../api/download.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('HTTPステータスコード: ' + response.status);
+          }
+          return response.blob()
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `ConvertUML.${selectedValue}`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('ダウンロードエラー:', error));
+    }
+
+    downloadBtn.addEventListener("click", () => {
+      downloadFile(editor.getValue())
+    })
+
     renderUML(editor.getValue(), previewContainer)
-    renderUML(`<?php echo $problem->uml ?>`, answerUml)
   </script>
 </body>
 
